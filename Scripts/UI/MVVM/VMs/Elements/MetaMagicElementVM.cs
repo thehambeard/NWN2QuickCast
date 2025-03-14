@@ -17,6 +17,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
         public readonly ReactiveProperty<Feature> MetaMagic = new ReactiveProperty<Feature>();
         public readonly IntReactiveProperty HeightenLevel = new IntReactiveProperty(-1);
         public readonly BoolReactiveProperty IsActive = new BoolReactiveProperty(false);
+        public IReadOnlyReactiveProperty<bool> HasMeta => MetaMagic.Select(meta => meta != null).ToReactiveProperty();
 
         public override void DisposeImplementation()
         {

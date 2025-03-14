@@ -1,6 +1,7 @@
 ﻿using Kingmaker.EntitySystem.Entities;
 using Kingmaker.RuleSystem;
 using Kingmaker.RuleSystem.Rules;
+using Kingmaker.UnitLogic;
 using NWN2QuickCast.UI.MVVM.VMs.Elements;
 using Owlcat.Runtime.Core;
 using Owlcat.Runtime.UI.MVVM;
@@ -17,7 +18,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
     {
         public readonly ReactiveCollection<MetaMagicElementVM> MMElements = new ReactiveCollection<MetaMagicElementVM>();
         public readonly ReactiveProperty<UnitEntityData> Unit = new ReactiveProperty<UnitEntityData>();
-        
+
         public MetaMagicPanelVM()
         {
             for (int i = 0; i < 12; i++)
@@ -37,7 +38,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 
             if (unit == null || spellbook == null || !unit.Descriptor.Spellbooks.Any(x => x.Blueprint.Spontaneous))
                 return;
-            
+
             var ruleCollectMetamagic = Rulebook.Trigger(new RuleCollectMetamagic(spellbook, null, null));
 
             int index;
@@ -48,12 +49,32 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
             ClearMetas(index);
         }
 
-        public void ClearMetas(int startIndex = 0) 
+        public void ClearMetas(int startIndex = 0)
         {
             for (int i = startIndex; i < MMElements.Count; i++)
                 MMElements[i].ClearMetaMagic();
-        } 
-        
+        }
+
+        public List<(Feature feature, int heightenLevel)> GetMetas()
+        {
+            List<(Feature feature, int heightenLevel)> result = new List<(Feature feature, int heightenLevel)>();
+
+            foreach (var element in MMElements.Where(x => x.HasMeta.Value))
+                result.Add((element.MetaMagic.Value, element.HeightenLevel.Value));
+
+            return result;
+        }
+
+        public List<(Feature feature, int heightenLevel)> GetActiveMetas()
+        {
+            List<(Feature feature, int heightenLevel)> result = new List<(Feature feature, int heightenLevel)>();
+
+            foreach (var element in MMElements.Where(x => x.HasMeta.Value && x.IsActive.Value))
+                result.Add((element.MetaMagic.Value, element.HeightenLevel.Value));
+
+            return result;
+        }
+
 
         public override void DisposeImplementation()
         {

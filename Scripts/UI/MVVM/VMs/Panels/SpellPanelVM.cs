@@ -44,7 +44,6 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         private bool _needUpdateSelection;
         private bool _needsReset;
         private List<(MechanicActionBarSlotSpell spell, MetamagicBuilder metaBuilder)> _spells = new List<(MechanicActionBarSlotSpell, MetamagicBuilder)>();
-        private Dictionary<string, (Feature feature, int heightenLevel)> _currentMetamagics = new Dictionary<string, (Feature feature, int heightenLevel)>();
         public readonly MetaMagicPanelVM MetaMagicPanelVM;
 
         public SpellPanelVM(MetaMagicPanelVM metaVM)
@@ -78,7 +77,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
             Elements.Clear();
 
             foreach (var slotGroup in _spells
-                .Where(x => _currentMetamagics.Count == 0 || x.spell.Spell.Spellbook.Blueprint.Spontaneous)
+                .Where(x => MetaMagicPanelVM.GetActiveMetas().Count == 0 || x.spell.Spell.Spellbook.Blueprint.Spontaneous)
                 .GroupBy(x => x.spell.Spell.Spellbook.Blueprint.Name))
             {
                 var spellCollection = new List<ElementBaseVM>();
@@ -97,7 +96,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
                             continue;
                         }
 
-                        if (_currentMetamagics.Count != 0 && spell.metaBuilder.ResultSpellLevel > spell.spell.Spell.Spellbook.MaxSpellLevel)
+                        if (MetaMagicPanelVM.GetActiveMetas().Count != 0 && spell.metaBuilder.ResultSpellLevel > spell.spell.Spell.Spellbook.MaxSpellLevel)
                             continue;
 
                         spellList.Add(new SpellElementVM(CreateSpell(spell)));
@@ -133,7 +132,6 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
                 if (_needUpdateSelection)
                 {
                     UpdateSelection();
-                    _currentMetamagics.Clear();
                     _needUpdateSelection = false;
                     _needsReset = true;
                 }
@@ -152,11 +150,11 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         private void CollectSpells(UnitEntityData unit)
         {
             _spells = ActionBarSpellbookHelper.Fetch(unit)
-                .Where(slot => _currentMetamagics.Count == 0 || (slot.Spell.MetamagicData == null && PossibleToApplyAll(slot.Spell, _currentMetamagics.Values.ToList())))
+                .Where(slot => MetaMagicPanelVM.GetActiveMetas().Count == 0 || (slot.Spell.MetamagicData == null && PossibleToApplyAll(slot.Spell, MetaMagicPanelVM.GetActiveMetas())))
                 .Select(slot =>
                 {
                     var builder = new MetamagicBuilder(slot.Spell.Spellbook, slot.Spell);
-                    ApplyAllMeta(_currentMetamagics.Values.ToList(), builder);
+                    ApplyAllMeta(MetaMagicPanelVM.GetActiveMetas(), builder);
                     return (slot, builder);
                 })
                 .ToList();
@@ -271,17 +269,11 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 
         public void OnMetaMagicAdd(Feature metamagic, int heightenLevel = -1)
         {
-            _currentMetamagics[metamagic.Blueprint.AssetGuidThreadSafe] = (metamagic, heightenLevel);
             _needsReset = true;
         }
 
         public void OnMetaMagicRemove(Feature metamagic)
         {
-            var key = metamagic.Blueprint.AssetGuidThreadSafe;
-
-            if (_currentMetamagics.ContainsKey(key))
-                _currentMetamagics.Remove(key);
-
             _needsReset = true;
         }
     }
