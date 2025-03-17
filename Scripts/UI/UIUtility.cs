@@ -87,6 +87,24 @@ namespace NWN2QuickCast.UI
             return newScale.x < newScale.y ? new Vector3(newScale.x, newScale.x, newScale.x) : new Vector3(newScale.y, newScale.y, newScale.y);
         }
 
+        public static bool AreRectTransformsEdgeToEdge(RectTransform rect1, RectTransform rect2, float tolerance = 7f)
+        {
+            Vector3[] corners1 = new Vector3[4];
+            Vector3[] corners2 = new Vector3[4];
+
+            rect1.GetWorldCorners(corners1);
+            rect2.GetWorldCorners(corners2);
+
+            bool edgeToEdgeHorizontal =
+                Mathf.Abs(corners1[2].x - corners2[0].x) <= tolerance || 
+                Mathf.Abs(corners1[0].x - corners2[2].x) <= tolerance;  
+
+            bool edgeToEdgeVertical =
+                Mathf.Abs(corners1[1].y - corners2[3].y) <= tolerance || 
+                Mathf.Abs(corners1[3].y - corners2[1].y) <= tolerance;  
+
+            return edgeToEdgeHorizontal || edgeToEdgeVertical;
+        }
 
 
         public static Vector2 LimitSizeDeltaRectInRect(Vector2 nSizeDelta, float padding, RectTransform parent, RectTransform child)

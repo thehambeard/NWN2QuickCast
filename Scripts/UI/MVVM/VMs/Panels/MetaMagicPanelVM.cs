@@ -18,6 +18,8 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
     {
         public readonly ReactiveCollection<MetaMagicElementVM> MMElements = new ReactiveCollection<MetaMagicElementVM>();
         public readonly ReactiveProperty<UnitEntityData> Unit = new ReactiveProperty<UnitEntityData>();
+        public bool HasActiveMetas => GetActiveMetas().Count > 0;
+        public bool HasMetas => GetMetas().Count > 0;
 
         public MetaMagicPanelVM()
         {

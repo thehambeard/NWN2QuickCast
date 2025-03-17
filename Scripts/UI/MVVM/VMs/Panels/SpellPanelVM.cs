@@ -20,6 +20,8 @@ using Kingmaker.Items;
 using Kingmaker.Items.Slots;
 using NWN2QuickCast.UI.MVVM.Events;
 using Kingmaker.UnitLogic.FactLogic;
+using UnityEngine;
+using Kingmaker.UnitLogic.Abilities.Blueprints;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 {
@@ -33,7 +35,8 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         ISpellBookCustomSpell,
         ILevelUpCompleteUIHandler,
         IFactCollectionUpdatedHandler,
-        IMetaMagicHandler
+        IMetaMagicHandler,
+        IConversionWindowHandler
     {
         public readonly ReactiveCollection<VirtualListElementVMBase> Elements = new ReactiveCollection<VirtualListElementVMBase>();
         private ClassHeaderElementVM _root = new ClassHeaderElementVM("root");
@@ -44,14 +47,18 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         private bool _needUpdateSelection;
         private bool _needsReset;
         private List<(MechanicActionBarSlotSpell spell, MetamagicBuilder metaBuilder)> _spells = new List<(MechanicActionBarSlotSpell, MetamagicBuilder)>();
+        
         public readonly MetaMagicPanelVM MetaMagicPanelVM;
+        public readonly NWN2ConversionWindowVM ConversionWindowVM;
 
-        public SpellPanelVM(MetaMagicPanelVM metaVM)
+        public SpellPanelVM(MetaMagicPanelVM metaVM, NWN2ConversionWindowVM conversionWindowVM)
         {
             MetaMagicPanelVM = metaVM;
+            ConversionWindowVM = conversionWindowVM;
 
             base.AddDisposable(MainThreadDispatcher.UpdateAsObservable().Subscribe(_ => OnUpdateHandler()));
             base.AddDisposable(EventBus.Subscribe(this));
+            BuildElements();
             base.AddDisposable(Game.Instance.SelectionCharacter.SelectionCharacterUpdated.Subscribe(_ =>
                 this._needUpdateSelection = Game.Instance.SelectionCharacter.SelectedUnit?.Value.Value != SelectedUnitValue));
             base.AddDisposable(Game.Instance.SelectionCharacter.SelectedUnit.Subscribe(x =>
@@ -70,14 +77,13 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
             }
             MetaMagicPanelVM.OnUnitChanged(unit);
         }
-
         private void BuildElements()
         {
             _root = new ClassHeaderElementVM("root");
             Elements.Clear();
 
             foreach (var slotGroup in _spells
-                .Where(x => MetaMagicPanelVM.GetActiveMetas().Count == 0 || x.spell.Spell.Spellbook.Blueprint.Spontaneous)
+                .Where(x => !MetaMagicPanelVM.HasActiveMetas || x.spell.Spell.Spellbook.Blueprint.Spontaneous)
                 .GroupBy(x => x.spell.Spell.Spellbook.Blueprint.Name))
             {
                 var spellCollection = new List<ElementBaseVM>();
@@ -96,7 +102,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
                             continue;
                         }
 
-                        if (MetaMagicPanelVM.GetActiveMetas().Count != 0 && spell.metaBuilder.ResultSpellLevel > spell.spell.Spell.Spellbook.MaxSpellLevel)
+                        if (MetaMagicPanelVM.HasActiveMetas && spell.metaBuilder.ResultSpellLevel > spell.spell.Spell.Spellbook.MaxSpellLevel)
                             continue;
 
                         spellList.Add(new SpellElementVM(CreateSpell(spell)));
@@ -150,7 +156,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         private void CollectSpells(UnitEntityData unit)
         {
             _spells = ActionBarSpellbookHelper.Fetch(unit)
-                .Where(slot => MetaMagicPanelVM.GetActiveMetas().Count == 0 || (slot.Spell.MetamagicData == null && PossibleToApplyAll(slot.Spell, MetaMagicPanelVM.GetActiveMetas())))
+                .Where(slot => !MetaMagicPanelVM.HasActiveMetas || (slot.Spell.MetamagicData == null && PossibleToApplyAll(slot.Spell, MetaMagicPanelVM.GetActiveMetas())))
                 .Select(slot =>
                 {
                     var builder = new MetamagicBuilder(slot.Spell.Spellbook, slot.Spell);
@@ -276,5 +282,12 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         {
             _needsReset = true;
         }
+
+        public void OpenConversionWindow(RectTransform buttonRect, SlotConversion slotConversion, UnitEntityData unit) =>
+            ConversionWindowVM.ShowWindow(buttonRect, slotConversion, unit);
+
+
+        public void CloseConversionWindow() 
+            => ConversionWindowVM.HideWindow();
     }
 }

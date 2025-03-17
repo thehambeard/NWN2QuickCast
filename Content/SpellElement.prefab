@@ -221,8 +221,8 @@ GameObject:
   - component: {fileID: 1917845567590958238}
   - component: {fileID: 4875738141518968297}
   - component: {fileID: 8984351439121917905}
-  - component: {fileID: 2006576357467336284}
   - component: {fileID: 10777646981451141}
+  - component: {fileID: 3506070713785311385}
   m_Layer: 5
   m_Name: SpellElement
   m_TagString: Untagged
@@ -271,52 +271,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _iconImage: {fileID: 10777646981451141}
-  _button: {fileID: 2006576357467336284}
+  _button: {fileID: 3506070713785311385}
   _resourceText: {fileID: 4179796845296991425}
---- !u!114 &2006576357467336284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7371344193275653454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 10777646981451141}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
+  m_TooltipCustomPlace: {fileID: 0}
+  m_UseTooltipCustomPlace: 0
 --- !u!114 &10777646981451141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,3 +305,86 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3506070713785311385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7371344193275653454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 85395974, guid: 7543b518db839574983138fc4879b4ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoRefresh: 0
+  TestState: 1
+  m_Interactable: 1
+  m_IsHighlighted: 0
+  m_IsFocus: 0
+  m_IsPressed: 0
+  ResetOnDisable: 1
+  m_ChildSelectables: []
+  m_CommonLayer: []
+  m_HoverSoundType: -1
+  m_ClickSoundType: -1
+  m_GroupsAllowInteraction: 1
+  m_MultiLayers: []
+  m_ActiveLayerIndex: 0
+  m_ConfirmClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  ConfirmClickHint: 
+  CanConfirm: 1
+  m_LongConfirmClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  LongConfirmClickHint: 
+  CanLongConfirm: 1
+  m_DeclineClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  DeclineClickHint: 
+  CanDecline: 1
+  m_LongDeclineClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  LongDeclineClickHint: 
+  CanLongDecline: 1
+  m_Func01ClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  Func01ClickHint: 
+  CanFunc01: 1
+  m_LongFunc01ClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  LongFunc01ClickHint: 
+  CanLongFunc01: 1
+  m_Func02ClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  Func02ClickHint: 
+  CanFunc02: 1
+  m_LongFunc02ClickEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_ListenersCount: 0
+    m_PersistentListenersCount: -1
+  LongFunc02ClickHint: 
+  CanLongFunc02: 1
+  m_Time: 0

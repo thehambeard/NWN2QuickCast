@@ -15,12 +15,18 @@ namespace NWN2QuickCast.UI.MVVM.Views
         [SerializeField]
         private MetaMagicPanelPCView _metaMagicPanelPCView;
 
+        [SerializeField]
+        private NWN2ConversionWindowPCView _conversionWindowPCView;
 
         public override void BindViewImplementation()
         {
             var metaVM = new MetaMagicPanelVM();
             _metaMagicPanelPCView.Bind(metaVM);
-            _spellPanelPCView.Bind(new SpellPanelVM(metaVM));
+
+            var conversionVM = new NWN2ConversionWindowVM();
+            _conversionWindowPCView.Bind(conversionVM);
+
+            _spellPanelPCView.Bind(new SpellPanelVM(metaVM, conversionVM));
         }
 
         public override void DestroyViewImplementation()
@@ -30,6 +36,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
         public void Initialize()
         {
             _spellPanelPCView.Initialize();
+            _conversionWindowPCView.Initialize();
         }
     }
 }

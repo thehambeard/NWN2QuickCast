@@ -16,18 +16,15 @@ namespace NWN2QuickCast.UI.MVVM.Views
         [SerializeField]
         private NWNQCWindowPCView _windowPCView;
 
-#if UNITY_EDITOR
-        private void Start()
-        {
-            this.Initialize();
-            this.Bind(new NWN2QCRootVM());
-        }
-#endif
+        public static NWN2QCRootPCView Root { get; private set; }
+
+
 
         public override void BindViewImplementation()
         {
             _windowPCView.Bind(new NWNQCWindowVM());
             _windowPCView.gameObject.FixTMPMaterialShader();
+            Root = this;
         }
 
         public override void DestroyViewImplementation()

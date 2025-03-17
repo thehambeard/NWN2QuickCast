@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TurnBased.Controllers;
 using UniRx;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
         public readonly ReactiveProperty<TooltipBaseTemplate> Tooltip = new ReactiveProperty<TooltipBaseTemplate>();
         public readonly BoolReactiveProperty HasConversions = new BoolReactiveProperty();
         public readonly IntReactiveProperty ResourceValue = new IntReactiveProperty();
+        public readonly ReactiveCommand OpenConversionWindowCommand = new ReactiveCommand();
+        public readonly ReactiveCommand CloseConversionWindowCommand = new ReactiveCommand();
 
         public readonly MechanicActionBarSlotSpell Spell;
         
@@ -37,6 +40,9 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
             ResourceValue.Value = Spell.GetResource();
 
             base.AddDisposable(MainThreadDispatcher.UpdateAsObservable().Subscribe(_ => OnUpdateHandler()));
+            base.AddDisposable(Observable.EveryUpdate()
+                .Where(_ => Input.GetKeyDown(KeyCode.Escape))
+                .Subscribe(_ => CloseConversionWindowCommand.Execute()));
         }
 
         private void OnUpdateHandler()
@@ -47,7 +53,24 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 
         public void OnClick()
         {
-            CastSpell();
+            if (!Spell.IsPossibleActive() && Spell.GetConvertedAbilityData().Count > 0 && OpenConversionWindowCommand.CanExecute.Value)
+                OpenConversionWindowCommand.Execute();
+            else
+                CastSpell();
+        }
+
+        public void OnRightClick()
+        {
+            if (Spell.GetConvertedAbilityData().Count > 0 && OpenConversionWindowCommand.CanExecute.Value)
+                OpenConversionWindowCommand.Execute();
+        }
+
+        public void OnHover(bool state)
+        {
+            if (Spell == null)
+                return;
+
+            Spell.OnHover(state);
         }
 
         public void CastSpell()
