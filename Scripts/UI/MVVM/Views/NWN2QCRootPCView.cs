@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Kingmaker.Blueprints;
+using Kingmaker.PubSubSystem;
 using Kingmaker.UI.MVVM._PCView.ActionBar;
 using Kingmaker.UI.MVVM._VM.Utility;
 using NWN2QuickCast.UI.Extensions;
@@ -18,17 +19,17 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
         public static NWN2QCRootPCView Root { get; private set; }
 
-
-
         public override void BindViewImplementation()
         {
-            _windowPCView.Bind(new NWNQCWindowVM());
+            _windowPCView.Bind(ViewModel.NWNQCWindowVM);
             _windowPCView.gameObject.FixTMPMaterialShader();
-            Root = this;
+            
         }
 
         public override void DestroyViewImplementation()
         {
+            Main.Logger.Debug($"Destroyed {nameof(NWN2QCRootPCView)}");
+            ViewModel.Dispose();
         }
 
         public void Initialize()
@@ -39,23 +40,25 @@ namespace NWN2QuickCast.UI.MVVM.Views
         [HarmonyPatch]
         internal static class BindPatch
         {
-            static NWN2QCRootPCView _rootPCView;
             static GameObject _rootPCViewPrefab;
 
             [HarmonyPatch(typeof(ActionBarBaseView), nameof(ActionBarBaseView.BindViewImplementation))]
             [HarmonyPostfix]
             private static void Bind()
             {
-                if (_rootPCViewPrefab == null)
-                    _rootPCViewPrefab = ResourcesLibrary.TryGetResource<GameObject>("a27b35ffed55e50408a77b751471e0b6");
-
-                if (_rootPCView != null)
-                    _rootPCView.DestroyView();
+                _rootPCViewPrefab = ResourcesLibrary.TryGetResource<GameObject>("a27b35ffed55e50408a77b751471e0b6");
 
                 var go = GameObject.Instantiate(_rootPCViewPrefab, WrathHelpers.GetStaticCanvas().transform, false);
-                var rootPCView = go.GetComponent<NWN2QCRootPCView>();
-                rootPCView.Initialize();
-                rootPCView.Bind(new NWN2QCRootVM());
+                Root = go.GetComponent<NWN2QCRootPCView>();
+                Root.Initialize();
+                Root.Bind(new NWN2QCRootVM());
+            }
+
+            [HarmonyPatch(typeof(ActionBarBaseView), nameof(ActionBarBaseView.DestroyViewImplementation))]
+            [HarmonyPostfix]
+            private static void Unbind()
+            {
+                Root.DestroyView();
             }
         }
     }

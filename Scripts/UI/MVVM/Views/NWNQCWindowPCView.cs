@@ -20,13 +20,9 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
         public override void BindViewImplementation()
         {
-            var metaVM = new MetaMagicPanelVM();
-            _metaMagicPanelPCView.Bind(metaVM);
-
-            var conversionVM = new NWN2ConversionWindowVM();
-            _conversionWindowPCView.Bind(conversionVM);
-
-            _spellPanelPCView.Bind(new SpellPanelVM(metaVM, conversionVM));
+            _metaMagicPanelPCView.Bind(ViewModel.MetaMagicPanelVM);
+            _conversionWindowPCView.Bind(ViewModel.NWN2ConversionWindowVM);
+            _spellPanelPCView.Bind(ViewModel.SpellPanelVM);
         }
 
         public override void DestroyViewImplementation()

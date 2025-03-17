@@ -1,6 +1,8 @@
 ﻿using Kingmaker;
 using Kingmaker.EntitySystem.Entities;
-using NWN2QuickCast.MVVM.VMs.Elements;
+using Kingmaker.UI.UnitSettings;
+using Kingmaker.Utility;
+using NWN2QuickCast.UI.MVVM.VMs.Elements;
 using Owlcat.Runtime.UI.MVVM;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ using UnityEngine.UI;
 
 namespace NWN2QuickCast.UI.MVVM.VMs
 {
-    class NWN2ConversionWindowVM : BaseDisposable, IViewModel
+    public class NWN2ConversionWindowVM : BaseDisposable, IViewModel
     {
         public readonly ReactiveCollection<SpellConversionElementVM> Elements = new ReactiveCollection<SpellConversionElementVM>();
         public readonly ReactiveCommand ShowWindowCommand = new ReactiveCommand();
@@ -26,8 +28,11 @@ namespace NWN2QuickCast.UI.MVVM.VMs
 
             ButtonRect = buttonRect;
 
-            foreach (var conversion in slotConversion.GetMechanicSlots(Unit))
-                Elements.Add(new SpellConversionElementVM(conversion));
+            foreach (var conversion in slotConversion
+                .GetMechanicSlots(Unit)
+                .Cast<MechanicActionBarSlotSpell>()
+                .NotNull())
+                    Elements.Add(new SpellConversionElementVM(conversion));
 
             if (ShowWindowCommand.CanExecute.Value) 
                 ShowWindowCommand.Execute();
@@ -38,8 +43,6 @@ namespace NWN2QuickCast.UI.MVVM.VMs
             if (HideWindowCommand.CanExecute.Value)
                 HideWindowCommand.Execute();
         }
-
-
 
         public override void DisposeImplementation()
         {

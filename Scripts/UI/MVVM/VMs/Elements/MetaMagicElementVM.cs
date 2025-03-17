@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 {
-    class MetaMagicElementVM : BaseDisposable, IViewModel
+    public class MetaMagicElementVM : BaseDisposable, IViewModel
     {
         public readonly ReactiveProperty<Feature> MetaMagic = new ReactiveProperty<Feature>();
         public readonly IntReactiveProperty HeightenLevel = new IntReactiveProperty(-1);

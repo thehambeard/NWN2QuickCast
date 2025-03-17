@@ -1,5 +1,5 @@
 ﻿using Kingmaker.UI.MVVM._VM.Utility;
-using NWN2QuickCast.MVVM.VMs.Elements;
+using NWN2QuickCast.UI.MVVM.VMs.Elements;
 using NWN2QuickCast.UI.MVVM.Views.Elements;
 using NWN2QuickCast.UI.MVVM.VMs;
 using Owlcat.Runtime.UI.MVVM;
@@ -91,7 +91,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
             float rawWidth = elementsInRow * cellSize + _padding.x;
 
             float maxHeight = _maxElementsInRow * cellSize + _padding.y;
-            float rawHeight = Mathf.Min(elementCount / idealRowCount * cellSize + _padding.y, maxHeight);
+            float rawHeight = Mathf.Min(Mathf.Ceil((float) elementCount / idealRowCount) * cellSize + _padding.y, maxHeight);
 
             _conversionBoxRect.sizeDelta = new Vector2(rawWidth, rawHeight);
 

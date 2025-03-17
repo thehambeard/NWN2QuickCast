@@ -41,14 +41,57 @@ namespace NWN2QuickCast.UI.MVVM.Views.Elements
         [SerializeField]
         private bool m_UseTooltipCustomPlace;
 
+        private IDisposable _hoverCoolDown;
+        private IDisposable _toolTip;
+
         public override void BindViewImplementation()
         {
             gameObject.FixTMPMaterialShader();
             base.AddDisposable(ViewModel.Icon.Subscribe(x => _iconImage.sprite = x));
-            base.AddDisposable(_button.OnLeftClickAsObservable().Subscribe(_ => ViewModel.OnClick()));
-            base.AddDisposable(_button.OnRightClickAsObservable().Subscribe(_ => ViewModel.OnRightClick()));
+            base.AddDisposable(_button.OnLeftClickAsObservable().Subscribe(_ =>
+            {
+                ViewModel.OnClick();
+                _hoverCoolDown?.Dispose();
+                _toolTip?.Dispose();
+                _hoverCoolDown = Observable.Timer(TimeSpan.FromSeconds(3)).Subscribe(_ =>
+                {
+                    _toolTip = _button.SetTooltip(
+                        ViewModel.Tooltip,
+                        new TooltipConfig(
+                            InfoCallPCMethod.ShiftRightMouseButton,
+                            InfoCallConsoleMethod.LongShortRightStickButton,
+                            false,
+                            false,
+                            this.TooltipPlace,
+                            0,
+                            0,
+                            0,
+                            null));
+                });
+            }));
+            base.AddDisposable(_button.OnRightClickAsObservable().Subscribe(_ =>
+            { 
+                ViewModel.OnRightClick();
+                _hoverCoolDown?.Dispose();
+                _toolTip?.Dispose();
+                _hoverCoolDown = Observable.Timer(TimeSpan.FromSeconds(3)).Subscribe(_ =>
+                {
+                    _toolTip = _button.SetTooltip(
+                        ViewModel.Tooltip,
+                        new TooltipConfig(
+                            InfoCallPCMethod.ShiftRightMouseButton,
+                            InfoCallConsoleMethod.LongShortRightStickButton,
+                            false,
+                            false,
+                            this.TooltipPlace,
+                            0,
+                            0,
+                            0,
+                            null));
+                });
+            }));
             base.AddDisposable(_button.OnHoverAsObservable().Subscribe(x => ViewModel.OnHover(x)));
-            base.AddDisposable(_button.SetTooltip(
+            base.AddDisposable(_toolTip = _button.SetTooltip(
                 ViewModel.Tooltip,
                 new TooltipConfig(
                     InfoCallPCMethod.ShiftRightMouseButton,
@@ -63,15 +106,13 @@ namespace NWN2QuickCast.UI.MVVM.Views.Elements
             base.AddDisposable(ViewModel.ResourceValue.Subscribe(x => _resourceText.text = x.ToString()));
             base.AddDisposable(ViewModel.OpenConversionWindowCommand.Subscribe(_ => OpenConversionWindow()));
             base.AddDisposable(ViewModel.CloseConversionWindowCommand.Subscribe(_ => CloseConversionWindow()));
-            
-                    
         }
 
         public void OpenConversionWindow()
         {
             EventBus.RaiseEvent<IConversionWindowHandler>(h => h.OpenConversionWindow(
-                (RectTransform) _button.transform, 
-                ViewModel.Spell.GetConvertedAbilityData(), 
+                (RectTransform)_button.transform,
+                ViewModel.Spell.GetConvertedAbilityData(),
                 ViewModel.Spell.Unit));
         }
 
@@ -95,7 +136,7 @@ namespace NWN2QuickCast.UI.MVVM.Views.Elements
             }
         }
 
-        
+
     }
 }
 

@@ -14,69 +14,42 @@ using UnityEngine;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 {
-    class SpellElementVM : BaseDisposable, IViewModel
+    class SpellElementVM : SpellElementBase
     {
-        public readonly ReactiveProperty<Sprite> Icon = new ReactiveProperty<Sprite>();
-        public readonly ReactiveProperty<TooltipBaseTemplate> Tooltip = new ReactiveProperty<TooltipBaseTemplate>();
+        
         public readonly BoolReactiveProperty HasConversions = new BoolReactiveProperty();
-        public readonly IntReactiveProperty ResourceValue = new IntReactiveProperty();
         public readonly ReactiveCommand OpenConversionWindowCommand = new ReactiveCommand();
         public readonly ReactiveCommand CloseConversionWindowCommand = new ReactiveCommand();
 
-        public readonly MechanicActionBarSlotSpell Spell;
-        
-        public SpellElementVM(MechanicActionBarSlotSpell spellSlot)
-        {
-            Spell = spellSlot;
 
+        public SpellElementVM(MechanicActionBarSlotSpell spellSlot) : base(spellSlot)
+        {
             Icon.Value = spellSlot.GetIcon();
 
             var convertdata = Spell.GetConvertedAbilityData();
             HasConversions.Value = convertdata.Count > 0 && (Spell.IsPossibleActive(null));
-            if (HasConversions.Value)
-                Main.Logger.Log("Converts!");
-
-            Tooltip.Value = Spell.GetTooltipTemplate();
-            ResourceValue.Value = Spell.GetResource();
-
-            base.AddDisposable(MainThreadDispatcher.UpdateAsObservable().Subscribe(_ => OnUpdateHandler()));
-            base.AddDisposable(Observable.EveryUpdate()
-                .Where(_ => Input.GetKeyDown(KeyCode.Escape))
-                .Subscribe(_ => CloseConversionWindowCommand.Execute()));
         }
 
-        private void OnUpdateHandler()
-        {
-            if (Spell.GetResource() != ResourceValue.Value)
-                ResourceValue.Value = Spell.GetResource();
-        }
-
-        public void OnClick()
+        public override void OnClick()
         {
             if (!Spell.IsPossibleActive() && Spell.GetConvertedAbilityData().Count > 0 && OpenConversionWindowCommand.CanExecute.Value)
+            {
                 OpenConversionWindowCommand.Execute();
+            }
             else
-                CastSpell();
+                base.OnClick();
         }
 
-        public void OnRightClick()
+        public override void OnRightClick()
         {
             if (Spell.GetConvertedAbilityData().Count > 0 && OpenConversionWindowCommand.CanExecute.Value)
+            {
                 OpenConversionWindowCommand.Execute();
+            }
         }
 
-        public void OnHover(bool state)
-        {
-            if (Spell == null)
-                return;
-
-            Spell.OnHover(state);
-        }
-
-        public void CastSpell()
-        {
-            Spell.OnClick();
-        }
+        public override void OnHover(bool state) =>
+            base.OnHover(state);
 
         public override void DisposeImplementation()
         {

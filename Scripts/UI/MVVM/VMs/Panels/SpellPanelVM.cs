@@ -22,10 +22,12 @@ using NWN2QuickCast.UI.MVVM.Events;
 using Kingmaker.UnitLogic.FactLogic;
 using UnityEngine;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
+using Owlcat.Runtime.Core;
+using Owlcat.Runtime.UI.Utility;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 {
-    class SpellPanelVM : BaseDisposable,
+    public class SpellPanelVM : BaseDisposable,
         IViewModel,
         ISelectionHandler,
         IUnitEquipmentHandler,
@@ -67,6 +69,8 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 
         public override void DisposeImplementation()
         {
+            Elements.Clear();
+            _spells = null;
         }
 
         private void OnUnitChanged(UnitEntityData unit)

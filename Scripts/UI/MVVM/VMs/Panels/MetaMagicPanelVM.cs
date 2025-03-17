@@ -14,7 +14,7 @@ using UniRx;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 {
-    class MetaMagicPanelVM : BaseDisposable, IViewModel
+    public class MetaMagicPanelVM : BaseDisposable, IViewModel
     {
         public readonly ReactiveCollection<MetaMagicElementVM> MMElements = new ReactiveCollection<MetaMagicElementVM>();
         public readonly ReactiveProperty<UnitEntityData> Unit = new ReactiveProperty<UnitEntityData>();
@@ -80,6 +80,8 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 
         public override void DisposeImplementation()
         {
+            MMElements.ForEach(x => x.Dispose());
+            MMElements.Clear();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using NWN2QuickCast.MVVM.VMs.Elements;
+﻿using NWN2QuickCast.UI.MVVM.VMs.Elements;
 using Owlcat.Runtime.UI.MVVM;
 using System;
 using System.Collections.Generic;
