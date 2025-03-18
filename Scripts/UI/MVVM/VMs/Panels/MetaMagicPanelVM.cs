@@ -21,10 +21,14 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         public bool HasActiveMetas => GetActiveMetas().Count > 0;
         public bool HasMetas => GetMetas().Count > 0;
 
+        public HeightenedSelectPanelVM HeightenedSelectPanelVM;
+
         public MetaMagicPanelVM()
         {
             for (int i = 0; i < 12; i++)
                 MMElements.Add(new MetaMagicElementVM());
+
+            base.AddDisposable(HeightenedSelectPanelVM = new HeightenedSelectPanelVM());
         }
 
         public void OnUnitChanged(UnitEntityData unit)
@@ -46,7 +50,10 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
             int index;
 
             for (index = 0; index < ruleCollectMetamagic.KnownMetamagics.Count; index++)
-                MMElements[index].SetMetaMagic(ruleCollectMetamagic.KnownMetamagics[index]);
+                MMElements[index].SetMetaMagic(ruleCollectMetamagic.KnownMetamagics[index], 
+                    ruleCollectMetamagic.KnownMetamagics[index].Blueprint.AssetGuidThreadSafe == "2f5d1e705c7967546b72ad8218ccf99c"
+                        ? HeightenedSelectPanelVM
+                        : null);
 
             ClearMetas(index);
         }

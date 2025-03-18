@@ -22,7 +22,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
         public readonly ReactiveCommand CloseConversionWindowCommand = new ReactiveCommand();
 
 
-        public SpellElementVM(MechanicActionBarSlotSpell spellSlot) : base(spellSlot)
+        public SpellElementVM(MechanicActionBarSlot spellSlot) : base(spellSlot)
         {
             Icon.Value = spellSlot.GetIcon();
 

@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using Owlcat.Runtime.UI.Controls.Other;
 
 namespace NWN2QuickCast.UI.MVVM.Views.Elements
 {
-    class SpellConversionElementPCView : VirtualListElementViewBase<SpellConversionElementVM>
+    class SpellConversionElementPCView : SpellElementBasePCView<SpellConversionElementVM>
     {
-        [SerializeField]
-        private Image _icon;
-
         public override void BindViewImplementation()
         {
-            base.AddDisposable(ViewModel.Icon.Subscribe(x => _icon.sprite = x));
+            base.BindViewImplementation();
+            base.AddDisposable(_button.OnLeftClickAsObservable().Subscribe(_ => ViewModel.OnClick()));
         }
 
         public override void DestroyViewImplementation()

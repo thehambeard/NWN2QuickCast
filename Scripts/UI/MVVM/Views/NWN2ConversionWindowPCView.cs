@@ -48,9 +48,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
         private RectTransform _conversionBoxRect;
 
         [SerializeField]
-        private float fadeDuration = 0.25f;
-
-        private bool _checkToClose = false;
+        private float _fadeDuration = 0.25f;
 
         public void Initialize()
         {
@@ -93,7 +91,8 @@ namespace NWN2QuickCast.UI.MVVM.Views
             float maxHeight = _maxElementsInRow * cellSize + _padding.y;
             float rawHeight = Mathf.Min(Mathf.Ceil((float) elementCount / idealRowCount) * cellSize + _padding.y, maxHeight);
 
-            _conversionBoxRect.sizeDelta = new Vector2(rawWidth, rawHeight);
+            //_conversionBoxRect.sizeDelta = new Vector2(rawWidth, rawHeight);
+            _conversionBoxRect.sizeDelta = new Vector2(maxHeight, maxHeight);
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(_conversionBoxRect);
             _virtGrid.LateUpdate();
@@ -103,16 +102,14 @@ namespace NWN2QuickCast.UI.MVVM.Views
         {
             gameObject.SetActive(true);
             _menuCanvasGroup.alpha = 0f;
-            _checkToClose = true;
 
             StartCoroutine(PlaceAndFadeMenuNextFrame());
         }
 
         public void HideMenu()
         {
-            _menuCanvasGroup.DOFade(0f, fadeDuration).SetEase(Ease.OutQuad);
+            _menuCanvasGroup.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuad);
             gameObject.SetActive(false);
-            _checkToClose = false;
         }
 
         void Update()
@@ -154,9 +151,9 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
             Vector2[] directions = new Vector2[]
             {
+                Vector2.up,
                 Vector2.right,
                 Vector2.left,
-                Vector2.up,
                 Vector2.down,
             };
 
@@ -169,7 +166,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
                     if (UIUtility.AreRectTransformsEdgeToEdge(_conversionBoxRect, ViewModel.ButtonRect))
                     break;
             }
-            _menuCanvasGroup.DOFade(1f, fadeDuration).SetEase(Ease.OutQuad);
+            _menuCanvasGroup.DOFade(1f, _fadeDuration).SetEase(Ease.OutQuad);
         }
 
         private Vector2 GetCandidatePosition(Vector2 direction)

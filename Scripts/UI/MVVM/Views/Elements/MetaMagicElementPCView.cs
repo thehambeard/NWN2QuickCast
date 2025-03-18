@@ -9,16 +9,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using Kingmaker.PubSubSystem;
+using Kingmaker.UI.MVVM._VM.Tooltip.Utils;
+using Owlcat.Runtime.UI.Tooltips;
+using Owlcat.Runtime.UI.Controls.Button;
+using Owlcat.Runtime.UI.Controls.Other;
 
 namespace NWN2QuickCast.UI.MVVM.Views.Elements
 {
     class MetaMagicElementPCView : ViewBase<MetaMagicElementVM>
     {
         [SerializeField]
-        private Button _button;
+        private OwlcatMultiButton _button;
 
         [SerializeField]
         private Image _icon;
+
+        private TooltipHandler _tooltipHandler;
 
         public override void BindViewImplementation()
         {
@@ -35,11 +41,24 @@ namespace NWN2QuickCast.UI.MVVM.Views.Elements
                     _icon.color = new Color(0f, 0f, 0f, 0f);
                 }
             }));
-            base.AddDisposable(_button.onClick.AsObservable().Subscribe(_ => ViewModel.ToggleActive()));
+            base.AddDisposable(_button.OnLeftClickAsObservable().Subscribe(_ =>
+            {
+                ViewModel.ToggleActive(((RectTransform)transform).anchoredPosition);
+            }));
+            base.AddDisposable(ViewModel.NewToolTipCommand.Subscribe(x =>
+            {
+                _tooltipHandler?.Dispose();
+                _tooltipHandler = this.SetTooltip(ViewModel.Tooltip, default);
+            }));
+            base.AddDisposable(ViewModel.DisposeToolTipCommand.Subscribe(x =>
+            {
+                _tooltipHandler?.Dispose();
+            }));
         }
 
         public override void DestroyViewImplementation()
         {
+            _tooltipHandler.Dispose();
         }
     }
 }

@@ -28,10 +28,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs
 
             ButtonRect = buttonRect;
 
-            foreach (var conversion in slotConversion
-                .GetMechanicSlots(Unit)
-                .Cast<MechanicActionBarSlotSpell>()
-                .NotNull())
+            foreach (var conversion in slotConversion.GetMechanicSlots(Unit))
                     Elements.Add(new SpellConversionElementVM(conversion));
 
             if (ShowWindowCommand.CanExecute.Value) 

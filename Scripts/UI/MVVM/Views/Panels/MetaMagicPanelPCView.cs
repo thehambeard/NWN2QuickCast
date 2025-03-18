@@ -21,6 +21,9 @@ namespace NWN2QuickCast.UI.MVVM.Views.Panels
         [SerializeField]
         private RectTransform _content;
 
+        [SerializeField]
+        private HeightenedSelectPanelPCView _heightenedSelectPrefab;
+
         public override void BindViewImplementation()
         {
             foreach(var element in ViewModel.MMElements)
@@ -28,6 +31,9 @@ namespace NWN2QuickCast.UI.MVVM.Views.Panels
                 var go = GameObject.Instantiate(_mmElementPrefab, _content, false);
                 go.Bind(element);
             }
+
+            _heightenedSelectPrefab.Bind(ViewModel.HeightenedSelectPanelVM);
+            _heightenedSelectPrefab.transform.SetAsLastSibling();
         }
 
         public override void DestroyViewImplementation()

@@ -17,9 +17,9 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
         public readonly ReactiveProperty<TooltipBaseTemplate> Tooltip = new ReactiveProperty<TooltipBaseTemplate>();
         public readonly IntReactiveProperty ResourceValue = new IntReactiveProperty();
 
-        public readonly MechanicActionBarSlotSpell Spell;
+        public readonly MechanicActionBarSlot Spell;
 
-        public SpellElementBase(MechanicActionBarSlotSpell spellSlot)
+        public SpellElementBase(MechanicActionBarSlot spellSlot)
         {
             Spell = spellSlot;
 

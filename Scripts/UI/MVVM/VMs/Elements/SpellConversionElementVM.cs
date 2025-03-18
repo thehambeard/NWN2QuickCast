@@ -6,11 +6,8 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 {
     public class SpellConversionElementVM : SpellElementBase
     {
-        public readonly MechanicActionBarSlotSpell Slot;
-
-        public SpellConversionElementVM(MechanicActionBarSlotSpell slot) : base(slot)
+        public SpellConversionElementVM(MechanicActionBarSlot slot) : base(slot)
         {
-            Slot = slot;
             Icon.Value = slot.GetForeIcon();
         }
 
