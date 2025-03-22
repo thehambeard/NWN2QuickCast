@@ -75,11 +75,10 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 
         private void OnUnitChanged(UnitEntityData unit)
         {
-            if (unit != null)
-            {
-                CollectSpells(unit);
-            }
             MetaMagicPanelVM.OnUnitChanged(unit);
+
+            if (unit != null)
+                CollectSpells(unit);
         }
         private void BuildElements()
         {

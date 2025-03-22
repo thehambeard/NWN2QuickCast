@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using JetBrains.Annotations;
+using UnityEngine.Events;
 
 namespace NWN2QuickCast.UI.WindowControl
 {
@@ -42,7 +44,15 @@ namespace NWN2QuickCast.UI.WindowControl
         private PivotModifier.Alignment _pivotAlignment;
 
         [SerializeField]
+        [CanBeNull]
         private Texture2D _editorCursor;
+
+        [SerializeField]
+        private bool _changeCursor;
+
+        [SerializeField]
+        [CanBeNull]
+        private UnityEvent<Vector2, Vector2, Vector3> _saveAction;
 
         public abstract void MoveAction(Vector2 vector);
 
@@ -70,6 +80,10 @@ namespace NWN2QuickCast.UI.WindowControl
                 _mouseStartPos = default;
                 _anchorModifier.Reset();
                 _pivotModifier.Reset();
+                _saveAction?.Invoke(
+                    _ownRectTransform.anchoredPosition, 
+                    _ownRectTransform.sizeDelta,
+                    _ownRectTransform.localScale);
             }
         }
 
@@ -86,6 +100,9 @@ namespace NWN2QuickCast.UI.WindowControl
 
         private void ShowCursor()
         {
+            if (!_changeCursor)
+                return;
+
 #if !UNITY_EDITOR
             if (!CursorController.IsResizeCursor)
             {
@@ -94,12 +111,17 @@ namespace NWN2QuickCast.UI.WindowControl
             }
 #else
             var hotspot = new Vector2(_editorCursor.width / 2, _editorCursor.height / 2);
-            Cursor.SetCursor(_editorCursor, hotspot, CursorMode.Auto);
+
+            if (_editorCursor != null)
+                Cursor.SetCursor(_editorCursor, hotspot, CursorMode.Auto);
 #endif
         }
 
         private void HideCursor()
         {
+            if (!_changeCursor)
+                return;
+
 #if !UNITY_EDITOR
             if (CursorController.IsResizeCursor)
             {

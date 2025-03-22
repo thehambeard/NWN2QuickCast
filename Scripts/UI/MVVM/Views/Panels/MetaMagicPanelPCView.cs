@@ -24,6 +24,9 @@ namespace NWN2QuickCast.UI.MVVM.Views.Panels
         [SerializeField]
         private HeightenedSelectPanelPCView _heightenedSelectPrefab;
 
+        [SerializeField]
+        private CanvasGroup _canvasGroup;
+
         public override void BindViewImplementation()
         {
             foreach(var element in ViewModel.MMElements)
@@ -34,10 +37,37 @@ namespace NWN2QuickCast.UI.MVVM.Views.Panels
 
             _heightenedSelectPrefab.Bind(ViewModel.HeightenedSelectPanelVM);
             _heightenedSelectPrefab.transform.SetAsLastSibling();
+            gameObject.SetActive(true);
         }
 
         public override void DestroyViewImplementation()
         {
+        }
+
+        public void Hide()
+        {
+            _canvasGroup.alpha = 0f;
+        }
+
+        public void Show()
+        {
+            _canvasGroup.alpha = 1f;
+        }
+
+        public void ToggleHideShow()
+        {
+            if (_canvasGroup.alpha == 0f)
+                Show();
+            else
+                Hide();
+        }
+
+        public void SetVisible(bool state)
+        {
+            if (state)
+                Show();
+            else
+                Hide();
         }
     }
 }

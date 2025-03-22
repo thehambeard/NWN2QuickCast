@@ -52,6 +52,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
                 Root = go.GetComponent<NWN2QCRootPCView>();
                 Root.Initialize();
                 Root.Bind(new NWN2QCRootVM());
+                Root.transform.SetAsFirstSibling();
             }
 
             [HarmonyPatch(typeof(ActionBarBaseView), nameof(ActionBarBaseView.DestroyViewImplementation))]

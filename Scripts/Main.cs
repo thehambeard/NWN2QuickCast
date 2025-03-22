@@ -2,6 +2,8 @@ using NWN2QuickCast.Utility;
 using Kingmaker.Modding;
 using System.Reflection;
 using UnityEngine;
+using NWN2QuickCast.Settings;
+using System.IO;
 
 namespace NWN2QuickCast
 {
@@ -11,12 +13,15 @@ namespace NWN2QuickCast
         public static bool IsEnabled { get; private set; } = true;
         public static Utility.Logger Logger { get; private set; }
         public static ModEventHandler ModEventHandler { get; private set; }
+        public static SettingsProvider Settings { get; private set; }
+
         [OwlcatModificationEnterPoint]
         public static void ModEntryPoint(OwlcatModification modDetails)
         {
             ModDetails = modDetails;
             Logger = new Utility.Logger(modDetails.Logger);
             ModEventHandler = new ModEventHandler();
+            Settings = new SettingsProvider(Path.Combine(ModDetails.Path, "settings.json"));
 
             modDetails.IsEnabled += () => IsEnabled;
             modDetails.OnSetEnabled += OnEnabled;

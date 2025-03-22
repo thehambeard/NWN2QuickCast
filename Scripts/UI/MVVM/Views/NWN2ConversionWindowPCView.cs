@@ -18,6 +18,8 @@ using DG.Tweening;
 using Kingmaker.UI.Constructor;
 using NWN2QuickCast.UI.Extensions;
 using UnityEngine.EventSystems;
+using NWN2QuickCast.Settings;
+using Kingmaker;
 
 namespace NWN2QuickCast.UI.MVVM.Views
 {
@@ -100,16 +102,29 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
         public void ShowMenu()
         {
+            GetScaleSettings();
             gameObject.SetActive(true);
             _menuCanvasGroup.alpha = 0f;
-
             StartCoroutine(PlaceAndFadeMenuNextFrame());
+            Game.Instance.UI.EscManager.Subscribe(() => HideMenu());
         }
 
         public void HideMenu()
         {
             _menuCanvasGroup.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuad);
+            Game.Instance.UI.EscManager.Unsubscribe(() => HideMenu());
             gameObject.SetActive(false);
+        }
+
+        private void GetScaleSettings()
+        {
+            var rect = (RectTransform)transform;
+            var setting = Main.Settings.GetSetting<WindowSetting>(SettingKeys.MainWindowSetting);
+
+            rect.localScale = new Vector3(
+                setting.WindowScaleX,
+                setting.WindowScaleY,
+                setting.WindowScaleZ);
         }
 
         void Update()
@@ -138,10 +153,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
                 }
 
                 if (!clickedInside)
-                {
-                    _conversionBoxRect.gameObject.SetActive(false);
-                }
-
+                    HideMenu();
             }
         }
 
@@ -151,9 +163,9 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
             Vector2[] directions = new Vector2[]
             {
-                Vector2.up,
                 Vector2.right,
                 Vector2.left,
+                Vector2.up,
                 Vector2.down,
             };
 
