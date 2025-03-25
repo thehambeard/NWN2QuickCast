@@ -135,6 +135,9 @@ namespace NWN2QuickCast.Settings
 
             SetSetting<HotKeySetting>(SettingKeys.HotKeyShowHide,
                 new HotKeySetting(SettingKeys.HotKeyShowHide, KeyCode.Z, false, false, true));
+
+            SetSetting<ColorSetting>(SettingKeys.BackgroundColor,
+                new ColorSetting(0f, 0f, 0f, 0f));
         }
     }
 }

@@ -93,8 +93,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
             float maxHeight = _maxElementsInRow * cellSize + _padding.y;
             float rawHeight = Mathf.Min(Mathf.Ceil((float) elementCount / idealRowCount) * cellSize + _padding.y, maxHeight);
 
-            //_conversionBoxRect.sizeDelta = new Vector2(rawWidth, rawHeight);
-            _conversionBoxRect.sizeDelta = new Vector2(maxHeight, maxHeight);
+            _conversionBoxRect.sizeDelta = new Vector2(rawWidth, rawHeight);
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(_conversionBoxRect);
             _virtGrid.LateUpdate();
@@ -106,13 +105,11 @@ namespace NWN2QuickCast.UI.MVVM.Views
             gameObject.SetActive(true);
             _menuCanvasGroup.alpha = 0f;
             StartCoroutine(PlaceAndFadeMenuNextFrame());
-            Game.Instance.UI.EscManager.Subscribe(() => HideMenu());
         }
 
         public void HideMenu()
         {
             _menuCanvasGroup.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuad);
-            Game.Instance.UI.EscManager.Unsubscribe(() => HideMenu());
             gameObject.SetActive(false);
         }
 

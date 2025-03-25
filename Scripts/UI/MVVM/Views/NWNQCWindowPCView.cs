@@ -31,7 +31,19 @@ namespace NWN2QuickCast.UI.MVVM.Views
         [SerializeField]
         private Button _settingsButton;
 
+        [SerializeField]
+        private Sprite _settingsButtonDefault;
+
+        [SerializeField]
+        private Sprite _settingsButtonPressed;
+
+        [SerializeField]
+        private Image _background;
+
+
         private IDisposable _hideShowBinding;
+
+
 
         public override void BindViewImplementation()
         {
@@ -42,12 +54,14 @@ namespace NWN2QuickCast.UI.MVVM.Views
            
             LoadRectProperties();
             LoadKeyBindings();
+            LoadBackgroundColor();
 
             base.AddDisposable(_settingsButton.OnClickAsObservable().Subscribe(_ =>
             {
                 _settingsPanelPCView.gameObject.SetActive(!_settingsPanelPCView.gameObject.activeSelf);
                 _spellPanelPCView.SetVisible(!_settingsPanelPCView.gameObject.activeSelf);
                 _metaMagicPanelPCView.SetVisible(!_settingsPanelPCView.gameObject.activeSelf);
+                _settingsButton.image.sprite = _settingsPanelPCView.gameObject.activeSelf ? _settingsButtonPressed : _settingsButtonDefault;
             }));
             base.AddDisposable(_hideShowBinding);
             base.AddDisposable(EventBus.Subscribe(this));
@@ -58,6 +72,12 @@ namespace NWN2QuickCast.UI.MVVM.Views
             var setting = Main.Settings.GetSetting<HotKeySetting>(SettingKeys.HotKeyShowHide);
             _hideShowBinding = Game.Instance.Keyboard.Bind(SettingKeys.HotKeyShowHide, ToggleShowHide);
             setting.RegisterHotkey();
+        }
+
+        private void LoadBackgroundColor()
+        {
+            var setting = Main.Settings.GetSetting<ColorSetting>(SettingKeys.BackgroundColor);
+            _background.color = setting.ToValue();
         }
 
         public override void DestroyViewImplementation()

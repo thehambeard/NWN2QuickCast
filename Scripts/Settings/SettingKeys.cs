@@ -10,6 +10,6 @@ namespace NWN2QuickCast.Settings
     {
         public const string MainWindowSetting = "MainWindowSetting";
         public const string HotKeyShowHide = "HotKeyShowHide";
-
+        public const string BackgroundColor = "BackgroundColor";
     }
 }

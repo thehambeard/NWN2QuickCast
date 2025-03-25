@@ -11,15 +11,16 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
     public class SettingsPanelVM : BaseDisposable, IViewModel
     {
         public HotKeySettingVM HotKeySettingVM;
+        public BackgroundSettingVM BackgroundSettingVM;
 
         public SettingsPanelVM()
         {
             base.AddDisposable(HotKeySettingVM = new HotKeySettingVM());
+            base.AddDisposable(BackgroundSettingVM = new BackgroundSettingVM());
         }
 
         public override void DisposeImplementation()
         {
-            base.AddDisposable(HotKeySettingVM = new HotKeySettingVM());
         }
     }
 }

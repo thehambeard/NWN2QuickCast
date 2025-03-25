@@ -15,9 +15,13 @@ namespace NWN2QuickCast.UI.MVVM.Views.Panels
         [SerializeField]
         private HotKeySettingPCView _hotKeySettingPCView;
 
+        [SerializeField]
+        private BackgroundSettingPCView _backgroundSettingPCView;
+
         public override void BindViewImplementation()
         {
             _hotKeySettingPCView.Bind(ViewModel.HotKeySettingVM);
+            _backgroundSettingPCView.Bind(ViewModel.BackgroundSettingVM);
             gameObject.SetActive(false);
         }
 
