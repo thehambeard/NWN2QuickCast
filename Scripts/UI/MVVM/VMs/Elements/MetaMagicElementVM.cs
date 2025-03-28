@@ -49,7 +49,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 
         public void SetActive(int heightenLevel = -1)
         {
-            if (HeightenedSelectPanelVM.Value != null && heightenLevel == -1)
+            if (HeightenedSelectPanelVM.Value != null && heightenLevel == -1 || !HasMeta.Value)
                 return;
 
             IsActive.Value = true;

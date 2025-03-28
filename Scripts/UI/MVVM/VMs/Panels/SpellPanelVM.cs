@@ -41,7 +41,6 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         IConversionWindowHandler
     {
         public readonly ReactiveCollection<VirtualListElementVMBase> Elements = new ReactiveCollection<VirtualListElementVMBase>();
-        private ClassHeaderElementVM _root = new ClassHeaderElementVM("root");
 
         public readonly ReactiveProperty<UnitEntityData> SelectedUnit = new ReactiveProperty<UnitEntityData>();
         public UnitEntityData SelectedUnitValue => SelectedUnit.Value;
@@ -80,9 +79,10 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
             if (unit != null)
                 CollectSpells(unit);
         }
+
         private void BuildElements()
         {
-            _root = new ClassHeaderElementVM("root");
+            var _root = new ClassHeaderElementVM("root");
             Elements.Clear();
 
             foreach (var slotGroup in _spells
@@ -152,6 +152,11 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
                     OnUnitChanged(SelectedUnitValue);
                     BuildElements();
                     _needsReset = false;
+                }
+                else if (_needsReset)
+                {
+                    MetaMagicPanelVM.ClearMetas();
+                    Elements.Clear();
                 }
             }
         }

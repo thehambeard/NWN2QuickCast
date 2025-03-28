@@ -4243,8 +4243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ownRectTransform: {fileID: 6480195612124865788}
   _parentRectTransform: {fileID: 6480195610856692012}
-  _anchorAlignment: 2
-  _pivotAlignment: 2
+  _anchorAlignment: 6
+  _pivotAlignment: 6
   _editorCursor: {fileID: 0}
   _changeCursor: 1
   _saveAction:
