@@ -1,6 +1,7 @@
 # NWN2 QuickCast
 
-## This is an OMM mod, use Modfinder to install (drag n drop, not on manifest yet)!  Unity Mod Manager (UMM) will not work.
+## This is an OMM mod, use Modfinder to install!  Unity Mod Manager (UMM) will not work.
+## If you used WotR Inventory Tweaks (Quick Cast). It is a separate mod. It can be kept or removed without harm.
 ## Completely save safe, can be installed/uninstalled mid playthrough.
 
 Features:
