@@ -1,6 +1,6 @@
 # NWN2 QuickCast
 
-## This is an OMM mod, use Modfinder to install!  Unity Mod Manager (UMM) will not work.
+## This is an OMM mod, use Modfinder to install (drag n drop, not on manifest yet)!  Unity Mod Manager (UMM) will not work.
 ## Completely save safe, can be installed/uninstalled mid playthrough.
 
 Features:
