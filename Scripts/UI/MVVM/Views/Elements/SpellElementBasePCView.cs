@@ -19,7 +19,7 @@ using Owlcat.Runtime.UI.Tooltips;
 
 namespace NWN2QuickCast.UI.MVVM.Views.Elements
 {
-    public abstract class SpellElementBasePCView<TViewModel> : VirtualListElementViewBase<TViewModel> where TViewModel : SpellElementBase
+    public abstract class SpellElementBasePCView<TViewModel> : VirtualListElementViewBase<TViewModel> where TViewModel : SpellElementBaseVM
     {
         [SerializeField]
         protected Image _iconImage;

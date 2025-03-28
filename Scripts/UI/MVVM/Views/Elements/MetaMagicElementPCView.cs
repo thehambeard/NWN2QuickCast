@@ -55,7 +55,7 @@ namespace NWN2QuickCast.UI.MVVM.Views.Elements
 
         public override void DestroyViewImplementation()
         {
-            _tooltipHandler.Dispose();
+            _tooltipHandler?.Dispose();
         }
     }
 }

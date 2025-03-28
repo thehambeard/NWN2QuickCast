@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 {
-    class SpellElementVM : SpellElementBase
+    class SpellElementVM : SpellElementBaseVM
     {
         
         public readonly BoolReactiveProperty HasConversions = new BoolReactiveProperty();
@@ -53,6 +53,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 
         public override void DisposeImplementation()
         {
+            base.DisposeImplementation();
         }
     }
 }

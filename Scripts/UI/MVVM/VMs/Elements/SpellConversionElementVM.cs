@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 {
-    public class SpellConversionElementVM : SpellElementBase
+    public class SpellConversionElementVM : SpellElementBaseVM
     {
         public SpellConversionElementVM(MechanicActionBarSlot slot) : base(slot)
         {
@@ -13,6 +13,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 
         public override void DisposeImplementation()
         {
+            base.DisposeImplementation();
         }
     }
 }

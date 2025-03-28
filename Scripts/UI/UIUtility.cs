@@ -125,7 +125,7 @@ namespace NWN2QuickCast.UI
             {
                 nSizeDelta.x = child.sizeDelta.x + offset;
             }
-            else if ((offset = childPosition.x + parentWidth / 2f + (1f - pivot.x) * scaledWidth + padding) >= parentWidth && nSizeDelta.x > child.sizeDelta.x)
+            else if ((offset = childPosition.x + parentWidth / 2f + (1f - pivot.x) * scaledWidth + padding) > parentWidth && nSizeDelta.x > child.sizeDelta.x)
             {
                 nSizeDelta.x = child.sizeDelta.x + parentWidth - offset;
             }
@@ -134,7 +134,7 @@ namespace NWN2QuickCast.UI
             {
                 nSizeDelta.y = child.sizeDelta.y + offset;
             }
-            else if ((offset = childPosition.y + parentHeight / 2f + (1f - pivot.y) * scaledHeight + padding) >= parentHeight && nSizeDelta.y > child.sizeDelta.y)
+            else if ((offset = childPosition.y + parentHeight / 2f + (1f - pivot.y) * scaledHeight + padding) > parentHeight && nSizeDelta.y > child.sizeDelta.y)
             {
                 nSizeDelta.y = child.sizeDelta.y + parentHeight - offset;
             }

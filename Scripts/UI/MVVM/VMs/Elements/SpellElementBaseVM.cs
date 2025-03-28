@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 {
-    public abstract class SpellElementBase : VirtualListElementVMBase
+    public abstract class SpellElementBaseVM : VirtualListElementVMBase
     {
         public readonly ReactiveProperty<Sprite> Icon = new ReactiveProperty<Sprite>();
         public readonly ReactiveProperty<TooltipBaseTemplate> Tooltip = new ReactiveProperty<TooltipBaseTemplate>();
@@ -19,7 +19,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 
         public readonly MechanicActionBarSlot Spell;
 
-        public SpellElementBase(MechanicActionBarSlot spellSlot)
+        public SpellElementBaseVM(MechanicActionBarSlot spellSlot)
         {
             Spell = spellSlot;
 
@@ -31,8 +31,15 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 
         protected virtual void OnUpdateHandler()
         {
-            if (Spell.GetResource() != ResourceValue.Value)
-                ResourceValue.Value = Spell.GetResource();
+            try
+            {
+                if (Spell.GetResource() != ResourceValue.Value)
+                    ResourceValue.Value = Spell.GetResource();
+            }
+            catch
+            {
+                Dispose();
+            }
         }
 
         public virtual void OnClick() => CastSpell();

@@ -2950,7 +2950,7 @@ MonoBehaviour:
   _maxWidth: -1
   _minHeight: 500
   _minWidth: -1
-  _padding: 5
+  _padding: 0
 --- !u!1 &3029124703771446897
 GameObject:
   m_ObjectHideFlags: 0

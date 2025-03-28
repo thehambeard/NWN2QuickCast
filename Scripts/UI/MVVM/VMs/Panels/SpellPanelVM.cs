@@ -68,7 +68,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 
         public override void DisposeImplementation()
         {
-            Elements.Clear();
+            DisposeElements();
             _spells = null;
         }
 
@@ -80,10 +80,16 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
                 CollectSpells(unit);
         }
 
+        private void DisposeElements()
+        {
+            Elements.ForEach(x => x.Dispose());
+            Elements.Clear();
+        }
+
         private void BuildElements()
         {
             var _root = new ClassHeaderElementVM("root");
-            Elements.Clear();
+            DisposeElements();
 
             foreach (var slotGroup in _spells
                 .Where(x => !MetaMagicPanelVM.HasActiveMetas || x.spell.Spell.Spellbook.Blueprint.Spontaneous)
@@ -156,7 +162,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
                 else if (_needsReset)
                 {
                     MetaMagicPanelVM.ClearMetas();
-                    Elements.Clear();
+                    DisposeElements();
                 }
             }
         }

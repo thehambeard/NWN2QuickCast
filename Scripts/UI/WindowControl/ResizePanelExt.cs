@@ -41,7 +41,7 @@ namespace NWN2QuickCast.UI.WindowControl
         private float _minWidth = 100f;
 
         [SerializeField]
-        private float _padding = 5f;
+        private float _padding = 0f;
 
         private bool _isDrag;
         private Vector2 _originalLocalPointerPosition;
