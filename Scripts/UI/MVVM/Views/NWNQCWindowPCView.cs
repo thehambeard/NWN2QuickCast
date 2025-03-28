@@ -43,7 +43,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
 
         private IDisposable _hideShowBinding;
-        private bool _active;
+        private WindowSetting _windowSetting;
 
         public override void BindViewImplementation()
         {
@@ -63,6 +63,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
                 _metaMagicPanelPCView.SetVisible(!_settingsPanelPCView.gameObject.activeSelf);
                 _settingsButton.image.sprite = _settingsPanelPCView.gameObject.activeSelf ? _settingsButtonPressed : _settingsButtonDefault;
             }));
+            base.AddDisposable(Observable.EveryUpdate().Subscribe(_ => gameObject.SetActive(_windowSetting.WindowIsShown && Game.Instance.CurrentMode == GameModeType.Default)));
             base.AddDisposable(_hideShowBinding);
             base.AddDisposable(EventBus.Subscribe(this));
         }
@@ -108,40 +109,36 @@ namespace NWN2QuickCast.UI.MVVM.Views
         public void LoadRectProperties()
         {
             var rect = (RectTransform)transform;
-            var setting = Main.Settings.GetSetting<WindowSetting>(SettingKeys.MainWindowSetting);
+            _windowSetting = Main.Settings.GetSetting<WindowSetting>(SettingKeys.MainWindowSetting);
 
-            _active = setting.WindowIsShown;
-            gameObject.SetActive(setting.WindowIsShown);
+            gameObject.SetActive(_windowSetting.WindowIsShown);
 
             rect.anchoredPosition = new Vector2(
-                setting.WindowPosX,
-                setting.WindowPosY);
+                _windowSetting.WindowPosX,
+                _windowSetting.WindowPosY);
 
             rect.sizeDelta = new Vector2(
-                setting.WindowSizeX,
-                setting.WindowSizeY);
+                _windowSetting.WindowSizeX,
+                _windowSetting.WindowSizeY);
 
             rect.localScale = new Vector3(
-                setting.WindowScaleX,
-                setting.WindowScaleY,
-                setting.WindowScaleZ);
+                _windowSetting.WindowScaleX,
+                _windowSetting.WindowScaleY,
+                _windowSetting.WindowScaleZ);
         }
-
-        public void Update()
-        {
-            gameObject.SetActive(_active && Game.Instance.CurrentMode == GameModeType.Default);
-        }
-
+        
         public void Show()
         {
             gameObject.SetActive(true);
-            _active = true;
+            _windowSetting.WindowIsShown = true;
+            Main.Settings.SetSetting<WindowSetting>(SettingKeys.MainWindowSetting, _windowSetting);
         }
 
         public void Hide()
         {
             gameObject.SetActive(false);
-            _active = false;
+            _windowSetting.WindowIsShown = false;
+            Main.Settings.SetSetting<WindowSetting>(SettingKeys.MainWindowSetting, _windowSetting);
         }
 
         public void ToggleShowHide()
