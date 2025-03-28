@@ -11,6 +11,7 @@ using System;
 using Kingmaker.PubSubSystem;
 using NWN2QuickCast.UI.MVVM.Events;
 using Kingmaker;
+using Kingmaker.GameModes;
 
 namespace NWN2QuickCast.UI.MVVM.Views
 {
@@ -42,8 +43,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
 
         private IDisposable _hideShowBinding;
-
-
+        private bool _active;
 
         public override void BindViewImplementation()
         {
@@ -51,7 +51,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
             _conversionWindowPCView.Bind(ViewModel.NWN2ConversionWindowVM);
             _spellPanelPCView.Bind(ViewModel.SpellPanelVM);
             _settingsPanelPCView.Bind(ViewModel.SettingsPanelVM);
-           
+
             LoadRectProperties();
             LoadKeyBindings();
             LoadBackgroundColor();
@@ -110,6 +110,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
             var rect = (RectTransform)transform;
             var setting = Main.Settings.GetSetting<WindowSetting>(SettingKeys.MainWindowSetting);
 
+            _active = setting.WindowIsShown;
             gameObject.SetActive(setting.WindowIsShown);
 
             rect.anchoredPosition = new Vector2(
@@ -126,14 +127,21 @@ namespace NWN2QuickCast.UI.MVVM.Views
                 setting.WindowScaleZ);
         }
 
+        public void Update()
+        {
+            gameObject.SetActive(_active && Game.Instance.CurrentMode == GameModeType.Default);
+        }
+
         public void Show()
         {
             gameObject.SetActive(true);
+            _active = true;
         }
 
         public void Hide()
         {
             gameObject.SetActive(false);
+            _active = false;
         }
 
         public void ToggleShowHide()
