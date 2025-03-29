@@ -66,25 +66,30 @@ namespace NWN2QuickCast.UI
             float scaledWidth = childWidth * newScale.x;
             float scaledHeight = childHeight * newScale.y;
 
-            if (childPosition.x + parentWidth / 2f - pivot.x * scaledWidth <= 0f)
+            if (childPosition.x + parentWidth / 2f - pivot.x * scaledWidth < 0f)
             {
-                newScale.x = (childPosition.x + parentWidth / 2f) / (pivot.x * childWidth);
+                newScale.x = (childPosition.x + parentWidth / 2f) / (pivot.x * childWidth + .001f);
             }
-            else if (childPosition.x + parentWidth / 2f + (1f - pivot.x) * scaledWidth >= parentWidth)
+            else if (childPosition.x + parentWidth / 2f + (1f - pivot.x) * scaledWidth > parentWidth)
             {
-                newScale.x = (parentWidth - childPosition.x - parentWidth / 2f) / ((1f - pivot.x) * childWidth);
-            }
-
-            if (childPosition.y + parentHeight / 2f - pivot.y * scaledHeight <= 0f)
-            {
-                newScale.y = (childPosition.y + parentHeight / 2f) / (pivot.y * childHeight);
-            }
-            else if (childPosition.y + parentHeight / 2f + (1f - pivot.y) * scaledHeight >= parentHeight)
-            {
-                newScale.y = (parentHeight - childPosition.y - parentHeight / 2f) / ((1f - pivot.y) * childHeight);
+                newScale.x = (parentWidth - childPosition.x - parentWidth / 2f) / ((1f - pivot.x) * childWidth + .001f);
             }
 
-            return newScale.x < newScale.y ? new Vector3(newScale.x, newScale.x, newScale.x) : new Vector3(newScale.y, newScale.y, newScale.y);
+            if (childPosition.y + parentHeight / 2f - pivot.y * scaledHeight < 0f)
+            {
+                newScale.y = (childPosition.y + parentHeight / 2f) / (pivot.y * childHeight + .001f);
+            }
+            else if (childPosition.y + parentHeight / 2f + (1f - pivot.y) * scaledHeight > parentHeight)
+            {
+                newScale.y = (parentHeight - childPosition.y - parentHeight / 2f) / ((1f - pivot.y) * childHeight + .001f);
+            }
+
+            if (newScale.x == float.NaN || newScale.y == float.NaN || newScale.x == 0f || newScale.y == 0f)
+                Main.Logger.Debug("NAN in LimitScaleRectInRect");
+
+            return newScale.x < newScale.y && (newScale.y != float.NaN || newScale.y != 0f) && (newScale.x != float.NaN || newScale.x != 0f)
+                ? new Vector3(newScale.x, newScale.x, newScale.x) 
+                : new Vector3(newScale.y, newScale.y, newScale.y);
         }
 
         public static bool AreRectTransformsEdgeToEdge(RectTransform rect1, RectTransform rect2, float tolerance = 7f)
@@ -163,7 +168,10 @@ namespace NWN2QuickCast.UI
 
         public static Vector3 MapValueVector(float a0, float a1, float b0, float b1, float a)
         {
-            float v = b0 + (b1 - b0) * ((a - a0) / (a1 - a0));
+            float v = b0 + (b1 - b0) * ((a - a0) / (a1 - a0 +.01f));
+
+            if (v == float.NaN || v == 0f)
+                Main.Logger.Debug("NaN in MapValueVector");
             return new Vector3(v, v, v);
         }
     }

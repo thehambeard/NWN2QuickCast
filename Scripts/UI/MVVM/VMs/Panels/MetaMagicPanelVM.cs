@@ -25,7 +25,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
 
         public MetaMagicPanelVM()
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 13; i++)
                 MMElements.Add(new MetaMagicElementVM());
 
             base.AddDisposable(HeightenedSelectPanelVM = new HeightenedSelectPanelVM());

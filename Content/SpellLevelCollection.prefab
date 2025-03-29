@@ -80,7 +80,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 172}
+  m_SizeDelta: {x: 440, y: 172}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4883186246424653445
 MonoBehaviour:
@@ -105,7 +105,7 @@ MonoBehaviour:
       Left: 0
       Right: 0
     m_OverrideWidth: 1
-    m_Width: 400
+    m_Width: 520
     m_OverrideHeight: 1
     m_Height: 40
     m_IsDirty:
@@ -114,7 +114,7 @@ MonoBehaviour:
   _spellElementPrefab: {fileID: 8984351439121917905, guid: 55323720557f24944a621c14497a8e0a,
     type: 3}
   _spellContainerTransform: {fileID: 6183645047460006132}
-  _spellContainerMaxWidth: 400
+  _spellContainerMaxWidth: 520
   _spellElementSize: 40
   _spacing: 3
 --- !u!1 &6183645048135211024

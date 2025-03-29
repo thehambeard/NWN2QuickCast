@@ -21,15 +21,30 @@ namespace NWN2QuickCast.UI.WindowControl
         public override void MoveAction(Vector2 vector)
         {
             var x = vector.x;
+            Vector3 newScale;
 
             if (x < 100f && x > 0f)
-                _ownRectTransform.localScale = UIUtility.LimitScaleRectInRect(
+            {
+                newScale = UIUtility.LimitScaleRectInRect(
                     UIUtility.MapValueVector(0f, 100f, _currentScale.x, _maxScale, x),
                     _parentRectTransform,
                     _ownRectTransform);
 
+                if (newScale.x == float.NaN || newScale.x == 0f)
+                    Main.Logger.Debug("NAN in MoveAction");
+                else
+                    _ownRectTransform.localScale = newScale;
+            }
+
             if (x > -100f && x < 0f)
-                _ownRectTransform.localScale = UIUtility.MapValueVector(0f, -100f, _currentScale.x, _minScale, x);
+            {
+                newScale = UIUtility.MapValueVector(0f, -100f, _currentScale.x, _minScale, x);
+
+                if (newScale.x == float.NaN || newScale.x == 0f)
+                    Main.Logger.Debug("NAN in MoveAction");
+                else
+                    _ownRectTransform.localScale = newScale;
+            }
         }
     }
 }
