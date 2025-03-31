@@ -114,7 +114,7 @@ MonoBehaviour:
   _spellElementPrefab: {fileID: 8984351439121917905, guid: 55323720557f24944a621c14497a8e0a,
     type: 3}
   _spellContainerTransform: {fileID: 6183645047460006132}
-  _spellContainerMaxWidth: 520
+  _spellContainerMaxWidth: 500
   _spellElementSize: 40
   _spacing: 3
 --- !u!1 &6183645048135211024

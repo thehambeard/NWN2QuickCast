@@ -137,7 +137,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
                 _windowSetting.WindowPosY);
 
             rect.sizeDelta = new Vector2(
-                _windowSetting.WindowSizeX,
+                540f,
                 _windowSetting.WindowSizeY);
 
             rect.localScale = new Vector3(
