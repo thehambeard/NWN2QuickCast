@@ -75,6 +75,7 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Panels
         private void OnUnitChanged(UnitEntityData unit)
         {
             MetaMagicPanelVM.OnUnitChanged(unit);
+            ConversionWindowVM.HideWindow();
 
             if (unit != null)
                 CollectSpells(unit);

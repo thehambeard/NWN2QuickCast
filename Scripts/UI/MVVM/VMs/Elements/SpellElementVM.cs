@@ -1,16 +1,5 @@
-﻿using Kingmaker;
-using Kingmaker.UI.UnitSettings;
-using Kingmaker.UnitLogic.Abilities;
-using Owlcat.Runtime.UI.MVVM;
-using Owlcat.Runtime.UI.Tooltips;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TurnBased.Controllers;
+﻿using Kingmaker.UI.UnitSettings;
 using UniRx;
-using UnityEngine;
 
 namespace NWN2QuickCast.UI.MVVM.VMs.Elements
 {

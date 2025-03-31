@@ -1,24 +1,12 @@
 ﻿using NWN2QuickCast.UI.MVVM.VMs.Elements;
-using Owlcat.Runtime.UI.MVVM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using UniRx;
-using TMPro;
-using NWN2QuickCast.UI.Extensions;
-using NWN2QuickCast.UI.MVVM.VMs;
 using Kingmaker.PubSubSystem;
 using NWN2QuickCast.UI.MVVM.Events;
-using Owlcat.Runtime.UI.Controls.Button;
 using Owlcat.Runtime.UI.Controls.Other;
 using Kingmaker.UI.MVVM._VM.Tooltip.Utils;
 using Owlcat.Runtime.UI.Tooltips;
-using JetBrains.Annotations;
-using Kingmaker.Utility;
 
 namespace NWN2QuickCast.UI.MVVM.Views.Elements
 {

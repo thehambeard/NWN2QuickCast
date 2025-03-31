@@ -5,21 +5,15 @@ using NWN2QuickCast.UI.MVVM.VMs;
 using Owlcat.Runtime.UI.MVVM;
 using Owlcat.Runtime.UI.VirtualListSystem;
 using Owlcat.Runtime.UniRx;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
 using System.Collections;
 using DG.Tweening;
-using Kingmaker.UI.Constructor;
 using NWN2QuickCast.UI.Extensions;
 using UnityEngine.EventSystems;
 using NWN2QuickCast.Settings;
-using Kingmaker;
 
 namespace NWN2QuickCast.UI.MVVM.Views
 {
@@ -39,7 +33,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
         [SerializeField]
         private RectTransform _parentRect;
-        
+
         [SerializeField]
         private RectTransform _scrollBarTransform;
 
@@ -91,7 +85,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
             float rawWidth = elementsInRow * cellSize + _padding.x;
 
             float maxHeight = _maxElementsInRow * cellSize + _padding.y;
-            float rawHeight = Mathf.Min(Mathf.Ceil((float) elementCount / idealRowCount) * cellSize + _padding.y, maxHeight);
+            float rawHeight = Mathf.Min(Mathf.Ceil((float)elementCount / idealRowCount) * cellSize + _padding.y, maxHeight);
 
             _conversionBoxRect.sizeDelta = new Vector2(rawWidth, rawHeight);
 
@@ -164,15 +158,15 @@ namespace NWN2QuickCast.UI.MVVM.Views
                 Vector2.left,
                 Vector2.up,
                 Vector2.down,
+                Vector2.right,
             };
 
             foreach (var dir in directions)
             {
                 Vector2 candidatePos = UIUtility.LimitPositionRectInRect(GetCandidatePosition(dir), _parentRect, _conversionBoxRect);
                 _conversionBoxRect.anchoredPosition = candidatePos;
-                
-                    
-                    if (UIUtility.AreRectTransformsEdgeToEdge(_conversionBoxRect, ViewModel.ButtonRect))
+
+                if (UIUtility.AreRectTransformsEdgeToEdge(_conversionBoxRect, ViewModel.ButtonRect))
                     break;
             }
             _menuCanvasGroup.DOFade(1f, _fadeDuration).SetEase(Ease.OutQuad);

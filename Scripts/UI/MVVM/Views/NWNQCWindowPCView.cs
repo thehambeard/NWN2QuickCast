@@ -150,6 +150,8 @@ namespace NWN2QuickCast.UI.MVVM.Views
             _canvasGroup.alpha = 0f;
             _windowSetting.WindowIsShown = false;
             Main.Settings.SetSetting<WindowSetting>(SettingKeys.MainWindowSetting, _windowSetting);
+
+            _conversionWindowPCView.HideMenu();
         }
 
         public void ToggleShowHide()
