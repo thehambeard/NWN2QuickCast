@@ -67,10 +67,18 @@ namespace NWN2QuickCast.UI.MVVM.Views
             }));
             base.AddDisposable(Observable.EveryUpdate().Subscribe(_ =>
             {
-                if (_windowSetting.WindowIsShown && (Game.Instance.CurrentMode == GameModeType.Default || Game.Instance.CurrentMode == GameModeType.Pause))
+                if (_windowSetting.WindowIsShown 
+                    && !gameObject.activeSelf 
+                    && (Game.Instance.CurrentMode == GameModeType.Default || Game.Instance.CurrentMode == GameModeType.Pause))
+                {
                     _canvasGroup.alpha = 1f;
-                else
+                    gameObject.SetActive(true);
+                }
+                else if (!_windowSetting.WindowIsShown && gameObject.activeSelf)
+                {
                     _canvasGroup.alpha = 0f;
+                    gameObject.SetActive(false);
+                }
             }));
             base.AddDisposable(_hideShowBinding);
             base.AddDisposable(EventBus.Subscribe(this));
@@ -140,6 +148,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
 
         public void Show()
         {
+            gameObject.SetActive(true);
             _canvasGroup.alpha = 1f;
             _windowSetting.WindowIsShown = true;
             Main.Settings.SetSetting<WindowSetting>(SettingKeys.MainWindowSetting, _windowSetting);
@@ -148,6 +157,7 @@ namespace NWN2QuickCast.UI.MVVM.Views
         public void Hide()
         {
             _canvasGroup.alpha = 0f;
+            gameObject.SetActive(false);
             _windowSetting.WindowIsShown = false;
             Main.Settings.SetSetting<WindowSetting>(SettingKeys.MainWindowSetting, _windowSetting);
 
