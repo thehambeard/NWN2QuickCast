@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Manifest:
     UniqueName: NWN2QuickCast
-    Version: 1.0.1
+    Version: 1.0.2
     DisplayName: NWN2 QuickCast
     Description: 
     Author: Hambeard

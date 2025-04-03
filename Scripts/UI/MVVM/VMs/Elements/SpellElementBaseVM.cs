@@ -26,15 +26,20 @@ namespace NWN2QuickCast.UI.MVVM.VMs.Elements
             Tooltip.Value = Spell.GetTooltipTemplate();
             ResourceValue.Value = Spell.GetResource();
 
-            base.AddDisposable(MainThreadDispatcher.UpdateAsObservable().Subscribe(_ => OnUpdateHandler()));
+            base.AddDisposable(MainThreadDispatcher
+                .UpdateAsObservable()
+                .Throttle(TimeSpan.FromMilliseconds(200))
+                .Subscribe(_ => OnUpdateHandler()));
         }
 
         protected virtual void OnUpdateHandler()
         {
             try
             {
-                if (Spell.GetResource() != ResourceValue.Value)
-                    ResourceValue.Value = Spell.GetResource();
+                var resource = Spell.GetResource();
+
+                if (resource != ResourceValue.Value)
+                    ResourceValue.Value = resource;
             }
             catch
             {
